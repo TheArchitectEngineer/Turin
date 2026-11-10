@@ -64,6 +64,26 @@ TurinDrawLock(NSPoint at, NSColor *color)
 	[shackle stroke];
 }
 
+/* the Bluetooth rune (Naples' NaplesDrawBluetooth): a vertical stroke with two arrow heads crossing over */
+static void
+rune(NSRect r, NSColor *color)
+{
+	CGFloat w = MIN(r.size.width, r.size.height * 0.62), h = r.size.height;
+	CGFloat cx = NSMidX(r), l = cx - w / 2, rt = cx + w / 2, b = NSMinY(r), t = NSMaxY(r);
+	NSBezierPath *p = [NSBezierPath bezierPath];
+	[color set];
+	[p setLineWidth: MAX(1.5, h / 9)];
+	[p setLineJoinStyle: NSRoundLineJoinStyle];
+	[p setLineCapStyle: NSRoundLineCapStyle];
+	[p moveToPoint: NSMakePoint(l, b + h * 0.27)];
+	[p lineToPoint: NSMakePoint(rt, t - h * 0.25)];
+	[p lineToPoint: NSMakePoint(cx, t)];
+	[p lineToPoint: NSMakePoint(cx, b)];
+	[p lineToPoint: NSMakePoint(rt, b + h * 0.25)];
+	[p lineToPoint: NSMakePoint(l, t - h * 0.27)];
+	[p stroke];
+}
+
 static void
 globe(NSRect r)
 {
@@ -168,6 +188,10 @@ TurinDrawIcon(TurinIconKind kind, NSRect r)
 	case TurinIconWifi:
 		tile(r, rgb(0.33, 0.66, 1.0), rgb(0.10, 0.42, 0.95));
 		TurinDrawWifiFan(NSInsetRect(r, r.size.width * 0.18, r.size.height * 0.25), 3, NO, [NSColor whiteColor]);
+		break;
+	case TurinIconBluetooth:
+		tile(r, rgb(0.33, 0.66, 1.0), rgb(0.10, 0.42, 0.95));
+		rune(NSInsetRect(r, r.size.width * 0.34, r.size.height * 0.2), [NSColor whiteColor]);
 		break;
 	case TurinIconNetwork:
 		tile(r, rgb(0.52, 0.55, 1.0), rgb(0.30, 0.30, 0.86));

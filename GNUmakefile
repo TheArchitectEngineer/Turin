@@ -4,7 +4,7 @@ include $(GNUSTEP_MAKEFILES)/common.make
 # the app is Settings (Settings.app, its menus, the dock); Turin is the project
 APP_NAME = Settings
 VERSION = 0.1
-Settings_OBJC_FILES = main.m TurinUtil.m TurinIcons.m TurinPane.m TurinWindow.m TurinImage.m TurinWifi.m TurinWifiPane.m \
+Settings_OBJC_FILES = main.m TurinUtil.m TurinIcons.m TurinPane.m TurinWindow.m TurinImage.m TurinWifi.m TurinWifiPane.m TurinBluetooth.m TurinBluetoothPane.m \
 	TurinNetworkPane.m TurinDateTimePane.m TurinBackgroundPane.m TurinUsersPane.m
 Settings_C_FILES = crypt_des.c
 Settings_MAIN_MODEL_FILE =

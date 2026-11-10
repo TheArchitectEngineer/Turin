@@ -3,7 +3,7 @@
  * the padlock the Wi-Fi pane's network list uses (Naples' drawings, NaplesWifi.m). */
 #import <AppKit/AppKit.h>
 
-typedef enum { TurinIconWifi, TurinIconNetwork, TurinIconDateTime, TurinIconBackground, TurinIconUsers } TurinIconKind;
+typedef enum { TurinIconWifi, TurinIconBluetooth, TurinIconNetwork, TurinIconDateTime, TurinIconBackground, TurinIconUsers } TurinIconKind;
 
 /* r is in an unflipped view */
 void TurinDrawIcon(TurinIconKind kind, NSRect r);

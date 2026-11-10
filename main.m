@@ -1,9 +1,10 @@
 /* Turin: the Settings app for GNUstep + Window Maker on Darwin/XNU. See README.md.
- * Defaults (all optional): TurinPane (the pane to open: Wi-Fi, Network, Date & Time, Background, Users; `-TurinPane Users`
+ * Defaults (all optional): TurinPane (the pane to open: Wi-Fi, Bluetooth, Network, Date & Time, Background, Users; `-TurinPane Users`
  * on the command line), TurinLastPane (the one shown when Turin last ran, kept by the window). */
 #import <AppKit/AppKit.h>
 #import "TurinWindow.h"
 #import "TurinWifiPane.h"
+#import "TurinBluetoothPane.h"
 #import "TurinNetworkPane.h"
 #import "TurinDateTimePane.h"
 #import "TurinBackgroundPane.h"
@@ -81,6 +82,7 @@ add_item(NSMenu *m, NSString *title, SEL action, NSString *key, id target)
 {
 	NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
 	NSArray *panes = [NSArray arrayWithObjects: [[[TurinWifiPane alloc] init] autorelease],
+	                  [[[TurinBluetoothPane alloc] init] autorelease],
 	                  [[[TurinNetworkPane alloc] init] autorelease], [[[TurinDateTimePane alloc] init] autorelease],
 	                  [[[TurinBackgroundPane alloc] init] autorelease], [[[TurinUsersPane alloc] init] autorelease], nil];
 	NSInteger start;
@@ -89,6 +91,18 @@ add_item(NSMenu *m, NSString *title, SEL action, NSString *key, id target)
 	start = [window indexOfPaneNamed: [d stringForKey: @"TurinPane"]];
 	if (start < 0) start = [window indexOfPaneNamed: [d stringForKey: @"TurinLastPane"]];
 	[window showPaneAtIndex: start < 0 ? 0 : start];
+	[[window window] makeKeyAndOrderFront: nil];
+	/* Naples' Bluetooth Settings… (and the like) while Turin runs: TurinShowPane {Pane = <title>} */
+	[[NSDistributedNotificationCenter defaultCenter] addObserver: self selector: @selector(showPaneNamed:)
+	                                                        name: @"TurinShowPane" object: nil];
+}
+
+- (void) showPaneNamed: (NSNotification *)n
+{
+	NSInteger i = [window indexOfPaneNamed: [[n userInfo] objectForKey: @"Pane"]];
+	if (i < 0) return;
+	[window showPaneAtIndex: i];
+	[NSApp activateIgnoringOtherApps: YES];
 	[[window window] makeKeyAndOrderFront: nil];
 }
 
